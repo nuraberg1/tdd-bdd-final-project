@@ -109,28 +109,25 @@ def step_impl(context, button):
     button_id = button.lower() + '-btn'
     context.driver.find_element_by_id(button_id).click()
 
-@then('I should see "{name}" in the results')
-def step_impl(context, name):
-    found = WebDriverWait(context.driver, context.wait_seconds).until(
-        expected_conditions.text_to_be_present_in_element(
-            (By.ID, 'search_results'),
-        )
-    )
-    assert(found)
+@then('I should see "{search_text}" in the results')
+def step_impl(context, search_text):
+    element = context.driver.find_element_by_id('search_results')
+    assert search_text in element.text
 
 @then('I should not see "{name}" in the results')
 def step_impl(context, name):
     element = context.driver.find_element_by_id('search_results')
     assert(name not in element.text)
 
-@then('I should see the message "{message}"')
-def step_impl(context, name):
-    element = WebDriverWait(context.driver, context.wait_seconds).until(
-        expected_conditions.text_to_be_present_in_element(
-            (By.ID, 'flash_message'),
-        )
-    )
-    assert(found)
+@then('I should see the message "Success"')
+def step_impl(context):
+    element = context.driver.find_element_by_id('flash_message')
+    assert "Success" in element.text
+
+@then(u'I should see the message "Product has been Deleted!"')
+def step_impl(context):
+    element = context.driver.find_element_by_id('flash_message')
+    assert "Product has been Deleted!" in element.text
 
 ##################################################################
 # This code works because of the following naming convention:
